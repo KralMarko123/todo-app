@@ -1,10 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MdDelete, MdCheck, MdAdd } from 'react-icons/md';
 import { v4 as uuidv4 } from 'uuid';
-import axios from 'axios';
 import GoogleSheetsService from './api/googleSheets';
-import { CONSTANTS } from './constants/CONSTANTS';
 import Spinner from './components/Spinner';
+import ToDo from './components/ToDo';
 
 const App = () => {
 	const [todos, setTodos] = useState([]);
@@ -86,22 +84,15 @@ const App = () => {
 				<div className='todos container'>
 					{todos.length > 0 ? (
 						todos.map((td) => (
-							<div className={`todo_entry${td.completed ? ' complete' : ''}`} key={td.id}>
-								<span className={`todo_text${td.completed ? ' complete' : ''}`}>{td.text}</span>
-								<div className='todo_buttons'>
-									<div
-										className={`todo_icon ${td.completed ? 'todo_add' : 'todo_complete'}`}
-										onClick={() => (td.completed ? restoreToDo(td.id) : completeToDo(td.id))}
-									>
-										<span>{td.completed ? <MdAdd /> : <MdCheck />}</span>
-									</div>
-									<div className='todo_icon todo_delete' onClick={() => removeToDo(td.id)}>
-										<span>
-											<MdDelete />
-										</span>
-									</div>
-								</div>
-							</div>
+							<ToDo
+								key={td.id}
+								id={td.id}
+								text={td.text}
+								completed={td.completed}
+								completeToDo={completeToDo}
+								restoreToDo={restoreToDo}
+								removeToDo={removeToDo}
+							/>
 						))
 					) : (
 						<h1 className='title'>No Items Yet</h1>
