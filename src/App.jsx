@@ -8,7 +8,8 @@ import Spinner from './components/Spinner';
 
 const App = () => {
 	const [todos, setTodos] = useState([]);
-	const [isLoading, setIsLoading] = useState(true);
+	const [isFetchingToDos, setIsFetchingToDos] = useState(true);
+	const [isAddingToDo, setIsAddingToDo] = useState(false);
 	const inputRef = useRef();
 
 	const addNewToDo = async () => {
@@ -20,12 +21,16 @@ const App = () => {
 			text: newToDoText,
 			completed: false
 		};
-		const todoAddedSuccessfully = await uploadToDo(newToDo);
+
+		setIsAddingToDo(true);
+		const todoAddedSuccessfully = await GoogleSheetsService.uploadToDo(newToDo);
 
 		if (todoAddedSuccessfully === 200) {
 			setTodos((prev) => [...prev, newToDo]);
 			inputRef.current.value = '';
 		}
+
+		setIsAddingToDo(false);
 	};
 
 	const completeToDo = (id) => {
@@ -51,26 +56,7 @@ const App = () => {
 					);
 				}
 			})
-			.finally(() => setIsLoading(false));
-	};
-
-	const uploadToDo = async (todo) => {
-		let formData = new FormData();
-
-		formData.append('id', todo.id);
-		formData.append('text', todo.text);
-		formData.append('completed', '0');
-
-		return await axios
-			.post(CONSTANTS.GOOGLE_SHEET_SCRIPT, formData, {
-				headers: { 'content-type': 'multipart/form-data' }
-			})
-			.then(async (response) => {
-				return response.status;
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+			.finally(() => setIsFetchingToDos(false));
 	};
 
 	useEffect(() => {
@@ -82,13 +68,19 @@ const App = () => {
 			<h1 className='title'>Marko's TODO</h1>
 
 			<div className='input container'>
-				<input placeholder='Add item here...' type='text' className='todo_input' ref={inputRef} />
+				<input
+					disabled={isAddingToDo}
+					placeholder='Add item here...'
+					type='text'
+					className='todo_input'
+					ref={inputRef}
+				/>
 				<button className='todo_button' onClick={async () => await addNewToDo()}>
-					<span>Add New Entry</span>
+					<span>{isAddingToDo ? <Spinner /> : 'Add New Entry'}</span>
 				</button>
 			</div>
 
-			{isLoading ? (
+			{isFetchingToDos ? (
 				<Spinner />
 			) : (
 				<div className='todos container'>

@@ -29,13 +29,14 @@
 
 	display: flex;
 	justify-content: space-evenly;
-	align-items: baseline;
+	align-items: stretch;
 	gap: 1em;
 }
 
 .todo_input {
 	width: 70%;
 	height: 100%;
+
 	background-color: transparent;
 	outline: none;
 	border: none;
@@ -47,6 +48,9 @@
 }
 
 .todo_button {
+	min-width: 350px;
+	min-height: 100px;
+
 	position: relative;
 	padding: 0.5em 1em;
 	background-color: transparent;
@@ -56,6 +60,10 @@
 	color: var(--text);
 	font-size: 2rem;
 	text-transform: capitalize;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
 
 	cursor: pointer;
 	overflow: hidden;

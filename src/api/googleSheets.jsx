@@ -20,6 +20,25 @@ const GoogleSheetsService = {
 			});
 	},
 
+	async uploadToDo(todo) {
+		let formData = new FormData();
+
+		formData.append('id', todo.id);
+		formData.append('text', todo.text);
+		formData.append('completed', '0');
+
+		return await axios
+			.post(CONSTANTS.GOOGLE_SHEET_SCRIPT, formData, {
+				headers: { 'content-type': 'multipart/form-data' }
+			})
+			.then(async (response) => {
+				return response.status;
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	},
+
 	parseCSV(csvText) {
 		const rows = csvText.split(/\r?\n/); // Use a regular expression to split the CSV text into rows while handling '\r'
 		const headers = rows[0].split(','); // Extract headers (assumes the first row is the header row)
