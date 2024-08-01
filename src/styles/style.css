@@ -19,12 +19,10 @@
 }
 
 .container {
-	min-width: 50%;
-	max-width: 100%;
+	width: 70%;
 }
 
 .input.container {
-	min-width: 70%;
 	margin-bottom: 3em;
 
 	display: flex;
@@ -156,6 +154,8 @@
 		justify-content: center;
 		align-items: center;
 		gap: 1em;
+
+		margin-bottom: 2em;
 	}
 
 	.todo_input {

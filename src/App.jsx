@@ -46,12 +46,16 @@ const App = () => {
 	const getCSVToDos = async () => {
 		await GoogleSheetsService.fetchSpreadsheet()
 			.then((todos) => {
+				todos = todos.slice(1);
+
 				if (todos.length > 0) {
-					setTodos(
-						todos.map((td) =>
-							td.completed === '0' ? { ...td, completed: false } : { ...td, completed: true }
-						)
-					);
+					let formattedToDos = todos.map((td) => ({
+						id: td[0],
+						text: td[1],
+						completed: td[2] === 0 ? false : true
+					}));
+
+					setTodos(formattedToDos);
 				}
 			})
 			.finally(() => setIsFetchingToDos(false));
