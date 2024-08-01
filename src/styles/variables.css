@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
+:root {
+	/**FONTS AND TEXT**/
+	--default-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
+		sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+	--title-font: 'Anton', sans-serif;
+
+	/**COLORS**/
+	--very-dark: #00171f;
+	--dark: #231f20;
+	--danger: #bb4430;
+	--accent: #7ebdc2;
+	--info: #f3dfa2;
+	--text: #efe6dd;
+}
