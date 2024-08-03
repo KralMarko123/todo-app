@@ -15,6 +15,10 @@
 	opacity: 0.5;
 }
 
+.todo_entry.updating {
+	animation: infinite 2s updating ease-in-out;
+}
+
 .todo_text {
 	display: block;
 	width: 80%;
@@ -225,5 +229,19 @@
 
 	.todo_add:hover span {
 		color: var(--very-dark);
+	}
+}
+
+@keyframes updating {
+	0% {
+		opacity: 1;
+	}
+
+	50% {
+		opacity: 0.25;
+	}
+
+	100% {
+		opacity: 1;
 	}
 }

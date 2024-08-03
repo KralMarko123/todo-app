@@ -16,12 +16,29 @@
 
 	border: 5px solid var(--text);
 	border-top: 5px solid var(--accent);
-	border-radius: 50%;
 }
 
 .todo_button:hover .loader {
 	border: 5px solid var(--dark);
 	border-top: 5px solid var(--accent);
+}
+
+.todo_icons .loader {
+	width: 50px;
+	height: 50px;
+
+	border: 5px solid var(--text);
+	border-top: 5px solid var(--accent);
+}
+
+@media (max-width: 780px) {
+	.todo_icons .loader {
+		width: 35px;
+		height: 35px;
+
+		border: 5px solid var(--text);
+		border-top: 5px solid var(--accent);
+	}
 }
 
 @keyframes spin {

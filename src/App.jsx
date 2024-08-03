@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import GoogleSheetsService from './api/googleSheets';
 import Spinner from './components/Spinner';
 import ToDo from './components/ToDo';
+import { getFormattedToDos } from './util/helperFunctions';
 
 const App = () => {
 	const [todos, setTodos] = useState([]);
@@ -31,33 +32,25 @@ const App = () => {
 		setIsAddingToDo(false);
 	};
 
-	const completeToDo = (id) => {
-		setTodos(todos.map((td) => (td.id === id ? { ...td, completed: true } : td)));
+	const toggleToDo = async (id, toggle) => {
+		const todoUpdatedSuccessfully = await GoogleSheetsService.updateToDo(id, toggle);
+
+		if (todoUpdatedSuccessfully === 200) {
+			setTodos(todos.map((td) => (td.id === id ? { ...td, completed: toggle } : td)));
+		}
 	};
 
-	const restoreToDo = (id) => {
-		setTodos(todos.map((td) => (td.id === id ? { ...td, completed: false } : td)));
-	};
+	const removeToDo = async (id) => {
+		const todoRemovedSuccessfully = await GoogleSheetsService.removeToDo(id);
 
-	const removeToDo = (id) => {
-		setTodos(todos.filter((td) => td.id !== id));
+		if (todoRemovedSuccessfully === 200) {
+			setTodos(todos.filter((td) => td.id !== id));
+		}
 	};
 
 	const getCSVToDos = async () => {
 		await GoogleSheetsService.fetchSpreadsheet()
-			.then((todos) => {
-				todos = todos.slice(1);
-
-				if (todos.length > 0) {
-					let formattedToDos = todos.map((td) => ({
-						id: td[0],
-						text: td[1],
-						completed: td[2] === 0 ? false : true
-					}));
-
-					setTodos(formattedToDos);
-				}
-			})
+			.then((todos) => setTodos(getFormattedToDos(todos)))
 			.finally(() => setIsFetchingToDos(false));
 	};
 
@@ -93,8 +86,7 @@ const App = () => {
 								id={td.id}
 								text={td.text}
 								completed={td.completed}
-								completeToDo={completeToDo}
-								restoreToDo={restoreToDo}
+								toggleToDo={toggleToDo}
 								removeToDo={removeToDo}
 							/>
 						))
