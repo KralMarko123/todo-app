@@ -1,8 +1,7 @@
-import { CONSTANTS } from '../constants/CONSTANTS';
-
+const googleSheetEndpoint = process.env.REACT_APP_SCRIPT_API;
 const GoogleSheetsService = {
 	async fetchSpreadsheet() {
-		return await fetch(CONSTANTS.GOOGLE_SHEET_SCRIPT, {
+		return await fetch(googleSheetEndpoint, {
 			method: 'GET'
 		})
 			.then(async (response) => {
@@ -21,7 +20,7 @@ const GoogleSheetsService = {
 			action: 'CREATE'
 		};
 
-		return await fetch(CONSTANTS.GOOGLE_SHEET_SCRIPT, {
+		return await fetch(googleSheetEndpoint, {
 			redirect: 'follow',
 			method: 'POST',
 			body: JSON.stringify(bodyToSend),
@@ -44,7 +43,7 @@ const GoogleSheetsService = {
 			action: 'UPDATE'
 		};
 
-		return await fetch(CONSTANTS.GOOGLE_SHEET_SCRIPT, {
+		return await fetch(googleSheetEndpoint, {
 			redirect: 'follow',
 			method: 'POST',
 			body: JSON.stringify(bodyToSend),
@@ -66,7 +65,7 @@ const GoogleSheetsService = {
 			action: 'DELETE'
 		};
 
-		return await fetch(CONSTANTS.GOOGLE_SHEET_SCRIPT, {
+		return await fetch(googleSheetEndpoint, {
 			redirect: 'follow',
 			method: 'POST',
 			body: JSON.stringify(bodyToSend),

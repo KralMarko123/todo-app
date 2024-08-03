@@ -45,6 +45,10 @@
 	color: var(--text);
 }
 
+.todo_input.adding {
+	opacity: 0.5;
+}
+
 .todo_button {
 	min-width: 350px;
 	min-height: 100px;

@@ -11,6 +11,10 @@ const App = () => {
 	const [isAddingToDo, setIsAddingToDo] = useState(false);
 	const inputRef = useRef();
 
+	const handleKeyDown = (e) => {
+		if (e.key === 'Enter') addNewToDo();
+	};
+
 	const addNewToDo = async () => {
 		const newToDoText = inputRef.current.value;
 		if (newToDoText.length === 0) return;
@@ -67,8 +71,9 @@ const App = () => {
 					disabled={isAddingToDo}
 					placeholder='Add item here...'
 					type='text'
-					className='todo_input'
+					className={`todo_input${isAddingToDo ? ' adding' : ''}`}
 					ref={inputRef}
+					onKeyDown={(e) => handleKeyDown(e)}
 				/>
 				<button className='todo_button' onClick={async () => await addNewToDo()}>
 					<span>{isAddingToDo ? <Spinner /> : 'Add New Entry'}</span>
