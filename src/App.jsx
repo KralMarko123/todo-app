@@ -4,8 +4,10 @@ import GoogleSheetsService from './api/googleSheets';
 import Spinner from './components/Spinner';
 import ToDo from './components/ToDo';
 import { getFormattedToDos } from './util/helperFunctions';
+import Login from './components/Login';
 
 const App = () => {
+	const [user, setUser] = useState(null);
 	const [todos, setTodos] = useState([]);
 	const [isFetchingToDos, setIsFetchingToDos] = useState(true);
 	const [isAddingToDo, setIsAddingToDo] = useState(false);
@@ -64,41 +66,47 @@ const App = () => {
 
 	return (
 		<div className='todo_app'>
-			<h1 className='title'>Marko's TODO</h1>
-
-			<div className='input container'>
-				<input
-					disabled={isAddingToDo}
-					placeholder='Add item here...'
-					type='text'
-					className={`todo_input${isAddingToDo ? ' adding' : ''}`}
-					ref={inputRef}
-					onKeyDown={(e) => handleKeyDown(e)}
-				/>
-				<button className='todo_button' onClick={async () => await addNewToDo()}>
-					<span>{isAddingToDo ? <Spinner /> : 'Add New Entry'}</span>
-				</button>
-			</div>
-
-			{isFetchingToDos ? (
-				<Spinner />
+			{!user ? (
+				<Login />
 			) : (
-				<div className='todos container'>
-					{todos.length > 0 ? (
-						todos.map((td) => (
-							<ToDo
-								key={td.id}
-								id={td.id}
-								text={td.text}
-								completed={td.completed}
-								toggleToDo={toggleToDo}
-								removeToDo={removeToDo}
-							/>
-						))
+				<>
+					<h1 className='title'>Marko's TODO</h1>
+
+					<div className='input container'>
+						<input
+							disabled={isAddingToDo}
+							placeholder='Add item here...'
+							type='text'
+							className={`todo_input${isAddingToDo ? ' adding' : ''}`}
+							ref={inputRef}
+							onKeyDown={(e) => handleKeyDown(e)}
+						/>
+						<button className='todo_button' onClick={async () => await addNewToDo()}>
+							<span>{isAddingToDo ? <Spinner /> : 'Add New Entry'}</span>
+						</button>
+					</div>
+
+					{isFetchingToDos ? (
+						<Spinner />
 					) : (
-						<h1 className='title'>No Items Yet</h1>
+						<div className='todos container'>
+							{todos.length > 0 ? (
+								todos.map((td) => (
+									<ToDo
+										key={td.id}
+										id={td.id}
+										text={td.text}
+										completed={td.completed}
+										toggleToDo={toggleToDo}
+										removeToDo={removeToDo}
+									/>
+								))
+							) : (
+								<h1 className='title'>No Items Yet</h1>
+							)}
+						</div>
 					)}
-				</div>
+				</>
 			)}
 		</div>
 	);

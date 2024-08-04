@@ -1,0 +1,5 @@
+.container.login {
+	padding: 1em;
+	background-color: var(--very-dark);
+	border-radius: 10px;
+}
