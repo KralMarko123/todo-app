@@ -1,4 +1,4 @@
-export const getFormattedToDos = (todos) => {
+export const formatToDos = (todos) => {
 	todos = todos.slice(1);
 
 	if (todos.length > 0) {
@@ -14,10 +14,14 @@ export const getFormattedToDos = (todos) => {
 	return [];
 };
 
-export const getFormattedToDo = (todo) => {
+export const formatToDo = (todo) => {
 	return {
 		id: todo[0],
 		text: todo[1],
 		completed: todo[2] === '0' ? false : true
 	};
+};
+
+export const sortToDosByCompleted = (todos) => {
+	return todos.sort((x, y) => y.completed - x.completed);
 };

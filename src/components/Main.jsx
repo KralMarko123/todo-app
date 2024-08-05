@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { getFormattedToDo, getFormattedToDos } from '../util/helperFunctions';
+import { formatToDos, formatToDo, sortToDosByCompleted } from '../util/helperFunctions';
 import GoogleSheetsService from '../api/googleSheets';
 import Spinner from './Spinner';
 import ToDo from './ToDo';
@@ -25,7 +25,7 @@ const Main = ({ username }) => {
 		if (todoAddedSuccessfully.status === 200) {
 			console.log(todoAddedSuccessfully.todo);
 
-			setTodos((prev) => [...prev, getFormattedToDo(todoAddedSuccessfully.todo)]);
+			setTodos((prev) => [...prev, formatToDo(todoAddedSuccessfully.todo)]);
 			inputRef.current.value = '';
 		}
 
@@ -36,7 +36,10 @@ const Main = ({ username }) => {
 		const todoUpdatedSuccessfully = await GoogleSheetsService.updateToDo(id, username);
 
 		if (todoUpdatedSuccessfully === 200) {
-			setTodos(todos.map((td) => (td.id === id ? { ...td, completed: toggle } : td)));
+			let updatedToDos = todos.map((td) => (td.id === id ? { ...td, completed: toggle } : td));
+			updatedToDos = sortToDosByCompleted(updatedToDos);
+
+			setTodos(updatedToDos);
 		}
 	};
 
@@ -51,7 +54,12 @@ const Main = ({ username }) => {
 	const getCSVToDos = async () => {
 		await GoogleSheetsService.fetchSpreadsheet(username)
 			.then((todos) => {
-				if (todos) setTodos(getFormattedToDos(todos));
+				if (todos) {
+					let formattedToDos = formatToDos(todos);
+					formattedToDos = sortToDosByCompleted(formattedToDos);
+
+					setTodos(formattedToDos);
+				}
 			})
 			.finally(() => setIsFetchingToDos(false));
 	};
