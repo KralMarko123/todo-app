@@ -68,7 +68,7 @@ const Main = ({ username }) => {
 
 	return (
 		<>
-			<h1 className='title'>Marko's TODO</h1>
+			<h1 className='title'>{`${username}'s TODO`}</h1>
 
 			<div className='input container'>
 				<input
