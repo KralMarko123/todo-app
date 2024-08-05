@@ -1,7 +1,32 @@
 const googleSheetEndpoint = process.env.REACT_APP_SCRIPT_API;
 const GoogleSheetsService = {
-	async fetchSpreadsheet() {
+	async login(username) {
+		let bodyToSend = {
+			username: username,
+			action: 'LOGIN'
+		};
+
 		return await fetch(googleSheetEndpoint, {
+			redirect: 'follow',
+			method: 'POST',
+			body: JSON.stringify(bodyToSend),
+			headers: {
+				'Content-Type': 'text/plain'
+			}
+		})
+			.then(async (response) => {
+				return response.status;
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	},
+
+	async fetchSpreadsheet(username) {
+		const encodedUsername = encodeURIComponent(username);
+		const endpointWIthUsername = `${googleSheetEndpoint}?username=${encodedUsername}`;
+
+		return await fetch(endpointWIthUsername, {
 			method: 'GET'
 		})
 			.then(async (response) => {
@@ -12,12 +37,13 @@ const GoogleSheetsService = {
 			});
 	},
 
-	async uploadToDo(todo) {
+	async uploadToDo(todo, username) {
 		let bodyToSend = {
 			id: todo.id,
 			text: todo.text,
 			completed: '0',
-			action: 'CREATE'
+			action: 'CREATE',
+			username: username
 		};
 
 		return await fetch(googleSheetEndpoint, {
@@ -36,11 +62,12 @@ const GoogleSheetsService = {
 			});
 	},
 
-	async updateToDo(id, completed) {
+	async updateToDo(id, completed, username) {
 		let bodyToSend = {
 			id: id,
 			completed: completed ? '1' : '0',
-			action: 'UPDATE'
+			action: 'UPDATE',
+			username: username
 		};
 
 		return await fetch(googleSheetEndpoint, {
@@ -59,10 +86,11 @@ const GoogleSheetsService = {
 			});
 	},
 
-	async removeToDo(id) {
+	async removeToDo(id, username) {
 		let bodyToSend = {
 			id: id,
-			action: 'DELETE'
+			action: 'DELETE',
+			username: username
 		};
 
 		return await fetch(googleSheetEndpoint, {
