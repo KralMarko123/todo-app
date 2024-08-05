@@ -23,8 +23,6 @@ const Main = ({ username }) => {
 		const todoAddedSuccessfully = await GoogleSheetsService.uploadToDo(newToDoText, username);
 
 		if (todoAddedSuccessfully.status === 200) {
-			console.log(todoAddedSuccessfully.todo);
-
 			setTodos((prev) => [...prev, formatToDo(todoAddedSuccessfully.todo)]);
 			inputRef.current.value = '';
 		}

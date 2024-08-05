@@ -4,7 +4,7 @@ export const formatToDos = (todos) => {
 	if (todos.length > 0) {
 		let formattedToDos = todos.map((td) => ({
 			id: td[0],
-			text: td[1],
+			text: td[1].replace(/^"(.*)"$/, '$1'),
 			completed: td[2] === 0 ? false : true
 		}));
 
@@ -17,7 +17,7 @@ export const formatToDos = (todos) => {
 export const formatToDo = (todo) => {
 	return {
 		id: todo[0],
-		text: todo[1],
+		text: todo[1].replace(/^"(.*)"$/, '$1'),
 		completed: todo[2] === '0' ? false : true
 	};
 };
