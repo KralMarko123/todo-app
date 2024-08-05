@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import { getFormattedToDos } from '../util/helperFunctions';
+import { getFormattedToDo, getFormattedToDos } from '../util/helperFunctions';
 import GoogleSheetsService from '../api/googleSheets';
 import Spinner from './Spinner';
 import ToDo from './ToDo';
@@ -20,17 +19,13 @@ const Main = ({ username }) => {
 		const newToDoText = inputRef.current.value;
 		if (newToDoText.length === 0) return;
 
-		const newToDo = {
-			id: uuidv4(),
-			text: newToDoText,
-			completed: false
-		};
-
 		setIsAddingToDo(true);
-		const todoAddedSuccessfully = await GoogleSheetsService.uploadToDo(newToDo, username);
+		const todoAddedSuccessfully = await GoogleSheetsService.uploadToDo(newToDoText, username);
 
-		if (todoAddedSuccessfully === 200) {
-			setTodos((prev) => [...prev, newToDo]);
+		if (todoAddedSuccessfully.status === 200) {
+			console.log(todoAddedSuccessfully.todo);
+
+			setTodos((prev) => [...prev, getFormattedToDo(todoAddedSuccessfully.todo)]);
 			inputRef.current.value = '';
 		}
 
@@ -38,7 +33,7 @@ const Main = ({ username }) => {
 	};
 
 	const toggleToDo = async (id, toggle) => {
-		const todoUpdatedSuccessfully = await GoogleSheetsService.updateToDo(id, toggle, username);
+		const todoUpdatedSuccessfully = await GoogleSheetsService.updateToDo(id, username);
 
 		if (todoUpdatedSuccessfully === 200) {
 			setTodos(todos.map((td) => (td.id === id ? { ...td, completed: toggle } : td)));

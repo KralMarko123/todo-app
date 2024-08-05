@@ -37,11 +37,9 @@ const GoogleSheetsService = {
 			});
 	},
 
-	async uploadToDo(todo, username) {
+	async uploadToDo(text, username) {
 		let bodyToSend = {
-			id: todo.id,
-			text: todo.text,
-			completed: '0',
+			text: text,
 			action: 'CREATE',
 			username: username
 		};
@@ -55,17 +53,16 @@ const GoogleSheetsService = {
 			}
 		})
 			.then(async (response) => {
-				return response.status;
+				return response.json();
 			})
 			.catch((error) => {
 				console.log(error);
 			});
 	},
 
-	async updateToDo(id, completed, username) {
+	async updateToDo(id, username) {
 		let bodyToSend = {
 			id: id,
-			completed: completed ? '1' : '0',
 			action: 'UPDATE',
 			username: username
 		};

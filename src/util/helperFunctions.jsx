@@ -13,3 +13,11 @@ export const getFormattedToDos = (todos) => {
 
 	return [];
 };
+
+export const getFormattedToDo = (todo) => {
+	return {
+		id: todo[0],
+		text: todo[1],
+		completed: todo[2] === '0' ? false : true
+	};
+};
