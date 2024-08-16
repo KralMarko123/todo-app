@@ -15,7 +15,7 @@ const GoogleSheetsService = {
 			}
 		})
 			.then(async (response) => {
-				return response.status;
+				return response.text();
 			})
 			.catch((error) => {
 				console.error(error);

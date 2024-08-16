@@ -19,9 +19,9 @@ const Login = ({ loginWithUsername }) => {
 		setIsLoggingIn(true);
 		const isUserSuccessfullyAdded = await GoogleSheetsService.login(username.toLowerCase());
 
-		if (isUserSuccessfullyAdded === 200) {
-			loginWithUsername(username);
-		}
+		if (isUserSuccessfullyAdded === 'Invalid Username!') {
+			inputRef.current.placeholder = 'Invalid username, try another one...';
+		} else loginWithUsername(username);
 
 		setIsLoggingIn(false);
 		inputRef.current.value = '';
